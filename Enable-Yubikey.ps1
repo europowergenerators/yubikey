@@ -73,6 +73,13 @@ if ($ConnectedKeys.Length -eq 0) {
     exit 2
 }
 
+# ERROR; FIDO reset only works with 1 key currently connected!
+if($ConnectedKeys.Length -gt 1) {
+    Write-Host @INFO 'Only 1 key can be reset at one time.'
+    Write-Host @USER 'Remove all keys but 1 and restart the script. Exiting..'
+    exit 2
+}
+
 Result ([ordered]@{
         'Number of connected keys' = $ConnectedKeys.Length
     })
