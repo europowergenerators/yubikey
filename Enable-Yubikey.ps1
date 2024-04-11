@@ -159,6 +159,11 @@ $ConnectedKeys | `
 #   - Management key can also be an AES key of 32 bytes
 #   - Functionality can be secured through secondary action; "Touching the key"
 #     The PIV standard doesn't define any second factor besides entering the PIN code
+#   - The management key can be 'managed' by the yubikey itself, protected by the PIN
+#     Activating this functionality is done by the project 'PIVSetupPinOnly'.
+#     The owner of the key has to _only remember the PIN_ of his security key in this mode.
+#   - The Yubikey has 20 legacy storage slots. These are kept for backwards compatibility.
+#     Age can use any of these legacy slots to store assymetric encryption key material
 #
 # The PIN and Management secrets are bound to the owner of the key.
 # The PUK secret is kept by the administrator.
@@ -208,6 +213,7 @@ if($pivToEnable -eq 0) {
     # Put key into PIN-Protected mode.
     # This generates a new management key and protects it with the PIN. This way the management key
     # is uniquely set and automatically unlocked when running management functions.
+    # The owner only needs to remember its PIN code
     & dotnet run --project '.\PIVSetupPinOnly' -- $DeviceSerial
     Result ([ordered]@{
             'Key'            = "$DeviceSerial [$i]"
